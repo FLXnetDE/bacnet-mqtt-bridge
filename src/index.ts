@@ -1,5 +1,6 @@
-import BacnetReader from "./BacnetReader";
 import { AppConfig, loadConfig } from "./config/AppConfig";
+import BacnetReader from "./BacnetReader";
+import { BACReadMultiple } from "@willieee802/ts-bacnet/lib/src/types";
 
 const main = async () => {
 
@@ -7,11 +8,14 @@ const main = async () => {
 
     const bacnetReader: BacnetReader = new BacnetReader(config.bacnetReaderConfig);
 
-    // console.log(JSON.stringify(config.bacnetReaderProperties));
+    try {
+        const result: BACReadMultiple = await bacnetReader.read(config.bacnetReaderProperties);
+        console.log(JSON.stringify(result));
+    } catch (err) {
+        console.error(err);
+    }
 
-    bacnetReader.read(config.bacnetReaderProperties)
-        .then((value) => console.log(JSON.stringify(value)))
-        .catch((err) => console.error(err));
+    bacnetReader.close();
 
 };
 

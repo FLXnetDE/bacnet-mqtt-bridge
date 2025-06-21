@@ -10,9 +10,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@willieee802/ts-bacnet": "^0.3.4"
+    "@willieee802/ts-bacnet": "^0.3.4",
+    "mqtt": "^5.13.1"
   },
   "devDependencies": {
+    "@types/mqtt": "^0.0.34",
     "@types/node": "^24.0.3"
   }
 }
