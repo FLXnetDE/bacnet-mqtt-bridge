@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && node dist/index.js"
+    "test": "tsc && node dist/index.js",
+    "build": "tsc"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +12,8 @@
   "description": "",
   "dependencies": {
     "@willieee802/ts-bacnet": "^0.3.4",
-    "mqtt": "^5.13.1"
+    "mqtt": "^5.13.1",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/mqtt": "^0.0.34",

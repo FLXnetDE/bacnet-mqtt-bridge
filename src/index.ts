@@ -1,21 +1,42 @@
 import { AppConfig, loadConfig } from "./config/AppConfig";
 import BacnetReader from "./BacnetReader";
 import { BACReadMultiple } from "@willieee802/ts-bacnet/lib/src/types";
+import { getPublishableResults } from "./tools/bacnetTools";
+import PublishableResult from "./types/PublishableResult";
+import logger from "./util/logger";
+import MqttWriter from "./MqttWriter";
+import Worker from "./Worker";
+
+const runProcess = async (config: AppConfig) => {
+    const bacnetReader: BacnetReader = new BacnetReader(config.bacnetReaderConfig);
+
+    const result: BACReadMultiple = await bacnetReader.read(config.bacnetReaderProperties);
+
+    const publishableResults: PublishableResult[] = getPublishableResults(result, config.bacnetReaderProperties);
+
+    const mqttWriter: MqttWriter = new MqttWriter(config.mqttBrokerUrl, config.mqttTopicPrefix);
+
+    await mqttWriter.connect();
+
+    await mqttWriter.write(publishableResults);
+
+    await mqttWriter.close();
+
+    bacnetReader.close();
+};
 
 const main = async () => {
 
-    const config: AppConfig = await loadConfig('config.json');
-
-    const bacnetReader: BacnetReader = new BacnetReader(config.bacnetReaderConfig);
-
     try {
-        const result: BACReadMultiple = await bacnetReader.read(config.bacnetReaderProperties);
-        console.log(JSON.stringify(result));
-    } catch (err) {
-        console.error(err);
-    }
+        const config: AppConfig = await loadConfig('config.json');
 
-    bacnetReader.close();
+        const worker: Worker = new Worker();
+
+        worker.start(() => runProcess(config), config.workerInterval * 1000);
+
+    } catch (err) {
+        logger.error(err);
+    }
 
 };
 

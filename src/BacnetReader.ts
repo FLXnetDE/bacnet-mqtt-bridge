@@ -1,7 +1,7 @@
 import Client from "@willieee802/ts-bacnet";
 import { BacnetError } from "@willieee802/ts-bacnet/lib/src/client";
 import { BACReadMultiple, ReadProperty } from "@willieee802/ts-bacnet/lib/src/types";
-import BacnetReaderConfig from "./config/BacnetReaderConfig";
+import BacnetReaderConfig from "./types/BacnetReaderConfig";
 
 /**
  * Reader for retrieving values from BACnet device

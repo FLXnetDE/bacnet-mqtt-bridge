@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import BacnetReaderConfig from "./BacnetReaderConfig";
+import BacnetReaderConfig from "../types/BacnetReaderConfig";
 import { ReadProperty } from '@willieee802/ts-bacnet/lib/src/types';
 
 /**
@@ -25,6 +25,11 @@ type AppConfig = {
      * MQTT publish topic prefix
      */
     mqttTopicPrefix: string;
+
+    /**
+     * Interval in seconds to run the application process
+     */
+    workerInterval: number;
 };
 
 /**
