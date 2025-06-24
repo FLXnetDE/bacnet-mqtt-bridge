@@ -1,0 +1,32 @@
+name: Build and Push to GHCR
+
+on:
+  push:
+    branches:
+      - main  # Trigger only on push to the main branch
+  workflow_dispatch:  # Allow manual trigger
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write  # Needed to push to GHCR
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Log in to GitHub Container Registry
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+
+      - name: Set image name
+        id: image
+        run: echo "IMAGE=ghcr.io/${{ github.repository_owner }}/bacnetmqttbridge:latest" >> $GITHUB_ENV
+
+      - name: Build Docker image
+        run: docker build -t $IMAGE .
+
+      - name: Push Docker image
+        run: docker push $IMAGE

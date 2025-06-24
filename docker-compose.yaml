@@ -1,0 +1,5 @@
+services:
+  bacnet-mqtt-bridge:
+    image: bacnetmqttbridge:latest
+    volumes:
+      - ./config.json:/app/config.json
