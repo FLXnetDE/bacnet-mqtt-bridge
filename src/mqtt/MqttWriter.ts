@@ -1,9 +1,8 @@
 import mqtt, { MqttClient, IClientOptions } from 'mqtt';
-import PublishableResult from './types/PublishableResult';
-import logger from './util/logger';
+import PublishableResult from '../types/PublishableResult';
+import logger from '../util/logger';
 
 class MqttWriter {
-
     private mqttBrokerUrl: string;
 
     private mqttTopicPrefix: string;
@@ -12,15 +11,19 @@ class MqttWriter {
 
     private client!: MqttClient;
 
-    constructor(mqttBrokerUrl: string, mqttTopicPrefix: string, options?: IClientOptions) {
+    constructor(
+        mqttBrokerUrl: string,
+        mqttTopicPrefix: string,
+        options?: IClientOptions,
+    ) {
         this.mqttBrokerUrl = mqttBrokerUrl;
-        this.mqttTopicPrefix = mqttTopicPrefix
+        this.mqttTopicPrefix = mqttTopicPrefix;
         this.options = options;
     }
 
     /**
-     * 
-     * @returns 
+     *
+     * @returns
      */
     public connect(): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -39,35 +42,49 @@ class MqttWriter {
     }
 
     /**
-     * 
-     * @param publishableResults 
-     * @returns 
+     *
+     * @param publishableResults
+     * @returns
      */
     public write(publishableResults: PublishableResult[]): Promise<void[]> {
-        return Promise.all(publishableResults.map(this.mapPublishableResults, this));
+        return Promise.all(
+            publishableResults.map(this.mapPublishableResults, this),
+        );
     }
 
     /**
-     * 
-     * @param value 
-     * @param index 
-     * @param array 
-     * @returns 
+     *
+     * @param value
+     * @param index
+     * @param array
+     * @returns
      */
-    private mapPublishableResults(value: PublishableResult, index: number, array: PublishableResult[]): Promise<void> {
-        return this.publish(`${this.mqttTopicPrefix}/${value.topic}`, value.value.toString());
+    private mapPublishableResults(
+        value: PublishableResult,
+        index: number,
+        array: PublishableResult[],
+    ): Promise<void> {
+        return this.publish(
+            `${this.mqttTopicPrefix}/${value.topic}`,
+            value.value.toString(),
+        );
     }
 
     /**
-     * 
-     * @param topic 
-     * @param payload 
-     * @param retain 
-     * @returns 
+     *
+     * @param topic
+     * @param payload
+     * @param retain
+     * @returns
      */
-    public publish(topic: string, payload: string | Buffer, retain = false): Promise<void> {
+    public publish(
+        topic: string,
+        payload: string | Buffer,
+        retain = false,
+    ): Promise<void> {
         return new Promise((resolve, reject) => {
-            if (!this.client.connected) return reject(new Error('MQTT client not connected'));
+            if (!this.client.connected)
+                return reject(new Error('MQTT client not connected'));
 
             this.client.publish(topic, payload, { retain }, (err) => {
                 if (err) {
@@ -80,8 +97,8 @@ class MqttWriter {
     }
 
     /**
-     * 
-     * @returns 
+     *
+     * @returns
      */
     public close(): Promise<void> {
         return new Promise((resolve, reject) => {
@@ -91,7 +108,6 @@ class MqttWriter {
             });
         });
     }
-
 }
 
 export default MqttWriter;

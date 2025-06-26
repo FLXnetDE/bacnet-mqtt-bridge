@@ -3,6 +3,12 @@ import PublishableResult from "../types/PublishableResult";
 import { PropertyIdentifier } from "@willieee802/ts-bacnet/lib/src/enum";
 import { getNameFromInstance } from "./configTools";
 
+/**
+ * 
+ * @param result 
+ * @param bacnetReaderProperties 
+ * @returns 
+ */
 const getPublishableResults = (result: BACReadMultiple, bacnetReaderProperties: Record<string, ReadProperty>): PublishableResult[] => {
     
     let publishableResults: PublishableResult[] = [];

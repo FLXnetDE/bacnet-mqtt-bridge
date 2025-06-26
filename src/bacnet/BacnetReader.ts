@@ -1,13 +1,15 @@
-import Client from "@willieee802/ts-bacnet";
-import { BacnetError } from "@willieee802/ts-bacnet/lib/src/client";
-import { BACReadMultiple, ReadProperty } from "@willieee802/ts-bacnet/lib/src/types";
-import BacnetReaderConfig from "./types/BacnetReaderConfig";
+import Client from '@willieee802/ts-bacnet';
+import { BacnetError } from '@willieee802/ts-bacnet/lib/src/client';
+import {
+    BACReadMultiple,
+    ReadProperty,
+} from '@willieee802/ts-bacnet/lib/src/types';
+import BacnetReaderConfig from '../types/BacnetReaderConfig';
 
 /**
  * Reader for retrieving values from BACnet device
  */
 class BacnetReader {
-
     /**
      * Local member instance for used BacnetReaderConfig
      */
@@ -26,7 +28,7 @@ class BacnetReader {
         this.bacnetReaderConfig = bacnetReaderConfig;
         this.bacnetClient = new Client({
             port: 47808,
-            apduTimeout: 10000
+            apduTimeout: 10000,
         });
     }
 
@@ -35,17 +37,24 @@ class BacnetReader {
      * @param bacnetReaderProperties Record of named ReadProperty
      * @returns Promise of BACReadMultiple
      */
-    public read(bacnetReaderProperties: Record<string, ReadProperty>): Promise<BACReadMultiple> {
+    public read(
+        bacnetReaderProperties: Record<string, ReadProperty>,
+    ): Promise<BACReadMultiple> {
         return new Promise((resolve, reject) => {
+            const propertiesArray: ReadProperty[] = Object.entries(
+                bacnetReaderProperties,
+            ).map(([, value]) => value);
 
-            const propertiesArray: ReadProperty[] = Object.entries(bacnetReaderProperties).map(([, value]) => value);
-
-            this.bacnetClient.readPropertyMultiple(this.bacnetReaderConfig.address, propertiesArray, {}, (error: BacnetError | Error, res?: BACReadMultiple) => {
-                if (error) reject(error);
-                if (!res) reject(`Empty result`);
-                if (res) resolve(res);
-            });
-
+            this.bacnetClient.readPropertyMultiple(
+                this.bacnetReaderConfig.address,
+                propertiesArray,
+                {},
+                (error: BacnetError | Error, res?: BACReadMultiple) => {
+                    if (error) reject(error);
+                    if (!res) reject(`Empty result`);
+                    if (res) resolve(res);
+                },
+            );
         });
     }
 
@@ -55,7 +64,6 @@ class BacnetReader {
     public close() {
         this.bacnetClient.close();
     }
-
-};
+}
 
 export default BacnetReader;
