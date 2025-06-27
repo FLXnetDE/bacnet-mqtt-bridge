@@ -1,5 +1,6 @@
 services:
     bacnet-mqtt-bridge:
         image: bacnetmqttbridge:latest
+        restart: always
         volumes:
             - ./config/config.json:/app/config.json
