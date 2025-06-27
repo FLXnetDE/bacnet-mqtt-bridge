@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "main": "index.js",
     "scripts": {
-        "test": "tsc && node dist/index.js",
+        "dev": "ts-node src/index.ts",
         "build": "tsc"
     },
     "keywords": [],
@@ -17,6 +17,7 @@
     },
     "devDependencies": {
         "@types/mqtt": "^0.0.34",
-        "@types/node": "^24.0.3"
+        "@types/node": "^24.0.3",
+        "ts-node": "^10.9.2"
     }
 }

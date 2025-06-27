@@ -44,7 +44,7 @@ const runProcess = async (config: AppConfig) => {
  */
 const main = async () => {
     try {
-        const config: AppConfig = await loadConfig('./config/config.json');
+        const config: AppConfig = await loadConfig('config.json');
 
         const worker: Worker = new Worker();
 

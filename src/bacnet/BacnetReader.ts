@@ -14,12 +14,10 @@ class BacnetReader {
      * Local member instance for used BacnetReaderConfig
      */
     private bacnetReaderConfig: BacnetReaderConfig;
-
     /**
      * Local member instance of BACnet client
      */
     private bacnetClient: Client;
-
     /**
      * Creator for BacnetReader object
      * @param bacnetReaderConfig Instance of configuration for BacnetReader

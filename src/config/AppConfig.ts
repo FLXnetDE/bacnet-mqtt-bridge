@@ -1,5 +1,5 @@
 import fs from 'fs/promises';
-import BacnetReaderConfig from "../types/BacnetReaderConfig";
+import BacnetReaderConfig from '../types/BacnetReaderConfig';
 import { ReadProperty } from '@willieee802/ts-bacnet/lib/src/types';
 
 /**
@@ -10,22 +10,18 @@ type AppConfig = {
      * Configuration for BacnetReader with connection information
      */
     bacnetReaderConfig: BacnetReaderConfig;
-
     /**
      * Properties to be read via BacnetReader
      */
     bacnetReaderProperties: Record<string, ReadProperty>;
-
     /**
      * MQTT broker connection URL
      */
     mqttBrokerUrl: string;
-
     /**
      * MQTT publish topic prefix
      */
     mqttTopicPrefix: string;
-
     /**
      * Interval in seconds to run the application process
      */
@@ -43,7 +39,4 @@ const loadConfig = async (filePath: string): Promise<AppConfig> => {
     return config as AppConfig;
 };
 
-export {
-    AppConfig,
-    loadConfig
-};
+export { AppConfig, loadConfig };

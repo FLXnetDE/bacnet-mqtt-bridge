@@ -1,4 +1,3 @@
-
 /**
  * Configuration for BacnetReader with connection information
  */

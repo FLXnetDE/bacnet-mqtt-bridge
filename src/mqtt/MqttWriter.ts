@@ -4,11 +4,8 @@ import logger from '../util/logger';
 
 class MqttWriter {
     private mqttBrokerUrl: string;
-
     private mqttTopicPrefix: string;
-
     private options?: IClientOptions;
-
     private client!: MqttClient;
 
     constructor(
